@@ -57,6 +57,8 @@ openlab.voice_recognition.on_recognized(on_speech)
 def send_event(value=None):
     env.mqtt.publish("openlab/weather_changer", {"value": value})
 
+# screen ?????? idk
+# env.mqtt.publish("openlab/screen/1/https://xandram.github.io/season_changer/")
 
 while True:
     time.sleep(0.1)
