@@ -5,8 +5,8 @@ import time
 
 from seasons import *
 
-env = tuke_openlab.simulation_env("am720fg")
-# env= tuke_openlab.production_env()
+# env = tuke_openlab.simulation_env("am720fg")
+env= tuke_openlab.production_env()
 openlab = tuke_openlab.Controller(env)
 
 # Premenná bude pripojená na moods.lights_enabled
@@ -49,7 +49,7 @@ def on_speech(text: str):
         send_event("zima")
         start_effect(run_winter_pulse)
 
-# env.mqtt.publish("openlab/audio", {"say": "Vyber si ročné obdobie"})
+env.mqtt.publish("openlab/audio", {"say": "Vyber si ročné obdobie"})
 env.mqtt.subscribe_to("openlab/voice/recognition", on_speech)
 
 openlab.voice_recognition.on_recognized(on_speech)
@@ -58,7 +58,20 @@ def send_event(value=None):
     env.mqtt.publish("openlab/weather_changer", {"value": value})
 
 # screen ?????? idk
-# env.mqtt.publish("openlab/screen/1/https://xandram.github.io/season_changer/")
+
+# class DisplaysPanel2x2(Screen):
+#     DEFAULT_URL = 'http://ukazky.kpi.fei.tuke.sk:8080/screen/schedule'
+#
+#     def init(self, environment: Environment):
+#         self.id = id
+#         super().init(environment, "2x2 displays panel", f'openlab/screen/1/url')
+#
+#     def set_default(self):
+#         self.set_url(self.DEFAULT_URL)
+
+# url = "https://xandram.github.io/season_changer/"
+url = "http://ukazky.kpi.fei.tuke.sk:8080/screen/schedule"
+env.mqtt.publish("openlab/screen/1/url", url)
 
 while True:
     time.sleep(0.1)
